@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +33,7 @@ public class ShipService {
         Ship ship = new Ship();
         ship.setName(request.getName());
         ship.setPort(request.getPort());
+        ship.setDate(Calendar.getInstance().getTime());
         return shipRepository.save(ship);
     }
 

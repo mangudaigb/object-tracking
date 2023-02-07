@@ -18,7 +18,7 @@ public class EntityAspect {
 
 //    @Pointcut("this(org.springframework.data.repository.Repository)")
 //    @Pointcut("this(org.springframework.data.jpa.repository.JpaRepository)")
-    @Pointcut("this(org.springframework.data.repository.Repository)")
+    @Pointcut("execution(* org.springframework.data.repository.CrudRepository.save(..))")
     public void getAllAdvice() {
 
     }
@@ -29,8 +29,15 @@ public class EntityAspect {
     public Object logDatabaseCalls(ProceedingJoinPoint pjp) throws Throwable {
         System.out.println("Repository calls are being made!");
         System.out.println(pjp.getSignature().getName());
-        System.out.println(MDC.get("thread-local"));
-//        ThreadLocal<String> threadLocal = ThreadLocal.
+        String traceId = MDC.get("TRACE-ID");
+        String parentSpanId = MDC.get("PARENT-SPAN-ID");
+        String spanId = MDC.get("SPAN-ID");
+
+        Object args = pjp.getArgs();
+
+        // If id == null then CREATE else UPDATE
+
+
         return pjp.proceed();
     }
 }
