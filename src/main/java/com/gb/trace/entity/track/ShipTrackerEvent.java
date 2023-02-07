@@ -8,10 +8,11 @@ import org.springframework.data.neo4j.core.schema.Relationship;
 import java.util.Date;
 
 @Node("Ship")
-public class ShipTrackerEntity {
+public class ShipTrackerEvent {
     @Id
     @GeneratedValue
     private Long id;
+    private Long shipId;
     private String name;
     private String port;
     private Date date;
@@ -21,8 +22,8 @@ public class ShipTrackerEntity {
     private String spanId;
     private String parentSpanId;
 
-    @Relationship(type = "PARENT")
-    private ShipTrackerEntity parentShipTrackerEntity;
+    @Relationship(value = "PARENT", direction = Relationship.Direction.OUTGOING)
+    private ShipTrackerEvent parentShipTrackerEvent;
 
     public Long getId() {
         return id;
@@ -30,6 +31,14 @@ public class ShipTrackerEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getShipId() {
+        return shipId;
+    }
+
+    public void setShipId(Long shipId) {
+        this.shipId = shipId;
     }
 
     public String getName() {
@@ -96,7 +105,11 @@ public class ShipTrackerEntity {
         this.parentSpanId = parentSpanId;
     }
 
-    public void update(ShipTrackerEntity parentShipTrackerEntity) {
-        this.parentShipTrackerEntity = parentShipTrackerEntity;
+    public ShipTrackerEvent getParentShipTrackerEvent() {
+        return parentShipTrackerEvent;
+    }
+
+    public void setParentShipTrackerEvent(ShipTrackerEvent parentShipTrackerEvent) {
+        this.parentShipTrackerEvent = parentShipTrackerEvent;
     }
 }

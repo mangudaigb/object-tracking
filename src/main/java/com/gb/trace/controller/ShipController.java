@@ -50,9 +50,9 @@ public class ShipController {
         return ResponseEntity.ok(ship);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Ship> updateShip(@PathVariable("id") Long shipId, String port) {
-        Ship ship = shipService.updateShipLocationByShipId(shipId, port);
+    @PutMapping("/{name}")
+    public ResponseEntity<Ship> updateShip(@PathVariable("name") String shipName, @RequestParam("port") String port) {
+        Ship ship = shipService.updateShipLocationByShipName(shipName, port);
         if (ship.getId() == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(ship);
     }

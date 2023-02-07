@@ -22,10 +22,10 @@ public class ShipService {
     }
 
     public Ship getShip(String shipName) {
-        Optional<Ship> optionalShip = shipRepository.findByName(shipName);
-        if (optionalShip.isPresent()) {
-            return optionalShip.get();
-        }
+//        Optional<Ship> optionalShip = shipRepository.findOneByName(shipName);
+//        if (optionalShip.isPresent()) {
+//            return optionalShip.get();
+//        }
         return new Ship();
     }
 
@@ -37,21 +37,23 @@ public class ShipService {
         return shipRepository.save(ship);
     }
 
-    public Ship updateShipLocationByShipId(Long id, String location) {
+    public Ship updateShipLocationByShipId(Long id, String port) {
         Optional<Ship> optionalShip = shipRepository.findById(id);
         if (optionalShip.isPresent()) {
             Ship ship = optionalShip.get();
-            ship.setPort(location);
+            ship.setPort(port);
+            ship.setDate(Calendar.getInstance().getTime());
             return shipRepository.save(ship);
         }
         return new Ship();
     }
 
-    public Ship updateShipLocation(String shipName, String location) {
+    public Ship updateShipLocationByShipName(String shipName, String port) {
         Optional<Ship> optionalShip = shipRepository.findByName(shipName);
         if (optionalShip.isPresent()) {
             Ship ship = optionalShip.get();
-            ship.setPort(location);
+            ship.setPort(port);
+            ship.setDate(Calendar.getInstance().getTime());
             shipRepository.save(ship);
             return ship;
         }
