@@ -4,7 +4,11 @@ import com.gb.trace.entity.Ship;
 import com.gb.trace.entity.dto.ShipRequest;
 import com.gb.trace.repository.ShipRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -17,7 +21,12 @@ public class ShipService {
     @Autowired
     private ShipRepository shipRepository;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     public List<Ship> getAllShips() {
+        Ship ship = new Ship();
+        updateFlag(ship);
         return shipRepository.findAll();
     }
 
@@ -60,4 +69,9 @@ public class ShipService {
         return new Ship();
     }
 
+    private void updateFlag(Ship ship) {
+        HttpEntity<Ship> request = new HttpEntity<>(ship);
+        ResponseEntity<Ship> response = restTemplate.exchange("http://localhost:8082/api/flags", HttpMethod.GET, request, Ship.class);
+        System.out.println("Status for Location: " + response.getStatusCode().value());
+    }
 }
